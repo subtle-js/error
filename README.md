@@ -1,3 +1,3 @@
-# @subtle-js/exception
+# @subtle-js/error
 
-The `Exception` interface provides a set of methods to perform error handling operations.
+The `SubtleError` interface provides a set of methods to perform error handling operations.
