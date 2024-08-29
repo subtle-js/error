@@ -1,6 +1,6 @@
 {
   "name": "@subtle-js/error",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "The `SubtleError` interface provides a set of methods to perform error handling operations.",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
