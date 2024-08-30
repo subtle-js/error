@@ -18,7 +18,7 @@ class SubtleError implements SubtleErrorInterface {
             Error.captureStackTrace(targetObject, constructorOpt)
         } else {
             // See https://github.com/sindresorhus/capture-stack-trace/blob/main/index.js
-            const container = new Error(); 
+            const container = new Error();
             Object.defineProperty(targetObject, 'stack', {
                 configurable: true,
                 get() {
