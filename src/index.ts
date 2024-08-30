@@ -14,7 +14,7 @@ interface SubtleErrorInterface {
  * See https://github.com/sindresorhus/capture-stack-trace/blob/main/index.js
  * @param err {Error}
  */
-function captureStackTraceShim(err: Error) {
+function captureStackTraceShim(err: object) {
     const container = new Error(); // eslint-disable-line unicorn/error-message
 
     Object.defineProperty(err, 'stack', {
@@ -27,12 +27,16 @@ function captureStackTraceShim(err: Error) {
     });
 }
 
-// @ts-expect-error
-const captureStackTrace: SubtleErrorInterface['captureStackTrace'] = Error.captureStackTrace ?? captureStackTraceShim;
-
 class SubtleError implements SubtleErrorInterface {
-    captureStackTrace = captureStackTrace
-
+    captureStackTrace(targetObject: object, constructorOpt?: Function): void {
+        // @ts-expect-error
+        if (Error.captureStackTrace) {
+            // @ts-expect-error
+            Error.captureStackTrace(targetObject, constructorOpt)
+        } else {
+            captureStackTraceShim(targetObject)
+        }
+    }
     captureError(container: CaptureErrorContract, error: Error): void {
         if (!container.captureError) {
             throw new Error('The "captureError" method not implemented on the container.')
