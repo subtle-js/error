@@ -14,7 +14,7 @@ interface SubtleErrorInterface {
  * See https://github.com/sindresorhus/capture-stack-trace/blob/main/index.js
  * @param err {Error}
  */
-function captureStackTraceShim(err: object) {
+function captureStackTrace(err: object) {
     const container = new Error(); // eslint-disable-line unicorn/error-message
 
     Object.defineProperty(err, 'stack', {
@@ -34,7 +34,7 @@ class SubtleError implements SubtleErrorInterface {
             // @ts-expect-error
             Error.captureStackTrace(targetObject, constructorOpt)
         } else {
-            captureStackTraceShim(targetObject)
+            captureStackTrace(targetObject)
         }
     }
     captureError(container: CaptureErrorContract, error: Error): void {
