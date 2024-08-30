@@ -1,20 +1,24 @@
 export interface CaptureErrorContract {
     /** Capture error using the container */
-    captureError(error: Error): void
+    captureError(err: Error): void
 }
 
 interface SubtleErrorInterface {
     /** Capture error using the container */
-    captureError(container: CaptureErrorContract, error: Error): void
+    captureError(container: CaptureErrorContract, err: Error): void
 }
 
 class SubtleError implements SubtleErrorInterface {
-    captureError(container: CaptureErrorContract, error: Error): void {
+    captureError(container: CaptureErrorContract, err: Error): void {
         if (!container.captureError) {
             throw new Error('The "captureError" method not implemented on the container.')
         }
-        return container.captureError(error)
+        return container.captureError(err)
     }
 }
 
-export const error = new SubtleError()
+class ErrorContainer {
+    public readonly subtle = new SubtleError()
+}
+
+export const error = new ErrorContainer()
