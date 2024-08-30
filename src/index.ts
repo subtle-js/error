@@ -10,23 +10,6 @@ interface SubtleErrorInterface {
     captureStackTrace(targetObject: object, constructorOpt?: Function): void;
 }
 
-/**
- * See https://github.com/sindresorhus/capture-stack-trace/blob/main/index.js
- * @param err {Error}
- */
-function captureStackTrace(err: object) {
-    const container = new Error(); // eslint-disable-line unicorn/error-message
-
-    Object.defineProperty(err, 'stack', {
-        configurable: true,
-        get() {
-            const { stack } = container;
-            Object.defineProperty(this, 'stack', { value: stack });
-            return stack;
-        },
-    });
-}
-
 class SubtleError implements SubtleErrorInterface {
     captureStackTrace(targetObject: object, constructorOpt?: Function): void {
         // @ts-expect-error
@@ -34,7 +17,16 @@ class SubtleError implements SubtleErrorInterface {
             // @ts-expect-error
             Error.captureStackTrace(targetObject, constructorOpt)
         } else {
-            captureStackTrace(targetObject)
+            // See https://github.com/sindresorhus/capture-stack-trace/blob/main/index.js
+            const container = new Error(); 
+            Object.defineProperty(targetObject, 'stack', {
+                configurable: true,
+                get() {
+                    const { stack } = container;
+                    Object.defineProperty(this, 'stack', { value: stack });
+                    return stack;
+                },
+            });
         }
     }
     captureError(container: CaptureErrorContract, error: Error): void {
