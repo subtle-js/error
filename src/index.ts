@@ -12,6 +12,7 @@ interface SubtleErrorInterface {
 
 class SubtleError implements SubtleErrorInterface {
     captureStackTrace(targetObject: object, constructorOpt?: Function): void {
+        Error.call(this)
         // @ts-ignore
         if (!Error.captureStackTrace) {
             Object.defineProperty(targetObject, 'stack', {
